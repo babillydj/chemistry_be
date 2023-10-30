@@ -78,6 +78,11 @@ async def upload_molecule(db: Session, file: UploadFile):
     
     for molecule in molecules:
         try:
+            SMILES_REGEX = r"^([^J][A-Za-z0-9@+\-\[\]\.\(\)\\\/%=#$]+)$"
+            pattern = re.compile(SMILES_REGEX)
+            if not pattern.match(molecule['smile']):
+                raise 
+            
             properties = get_properties(molecule['smile'])
             db_molecule = MoleculeModel(
                 smiles=molecule['smile'], name=molecule['name'], log_p=properties['log_p'], 
