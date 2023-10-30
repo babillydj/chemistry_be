@@ -12,9 +12,16 @@ from app.schemas.molecule import MoleculeCreate as SchemaMoleculeCreate
 from app.schemas.molecule import MoleculeUpdate as SchemaMoleculeUpdate
 
 
-def get_list_molecule(db: Session, skip: int = 0, limit: int = 100) -> List[MoleculeModel]:
+def get_list_molecule(db: Session, skip: int = 0, limit: int = 100, sort_by: str = 'updated') -> List[MoleculeModel]:
     """get list of molecule from db"""
-    return db.query(MoleculeModel).order_by(MoleculeModel.updated.desc()).offset(skip).limit(limit).all()
+    queryset = db.query(MoleculeModel)
+    print(sort_by)
+    if sort_by == 'updated': 
+        queryset = queryset.order_by(MoleculeModel.updated.desc())
+    elif sort_by == 'name':
+        queryset = queryset.order_by(MoleculeModel.name)
+    queryset = queryset.offset(skip).limit(limit).all()
+    return queryset
 
 
 def generate_name(db: Session):

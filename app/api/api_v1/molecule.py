@@ -14,8 +14,8 @@ router =  APIRouter(
 
 
 @router.get("/molecule", tags=["molecule"], response_model=List[schemas.Molecule])
-def molecule_list(skip: int = 0, limit: int = None, db: Session = Depends(get_db)) -> List[MoleculeModel]:
-    molecules = controller.get_list_molecule(db, skip=skip, limit=limit)
+def molecule_list(skip: int = 0, limit: int = None, sort_by: str = 'updated', db: Session = Depends(get_db)) -> List[MoleculeModel]:
+    molecules = controller.get_list_molecule(db, skip=skip, limit=limit, sort_by=sort_by)
     return molecules
 
 
